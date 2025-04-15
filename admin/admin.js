@@ -47,73 +47,61 @@ function editContent() {
     });
 }
 
-let links = [];
+let links = []; // Global variable to hold links
 
 function editLinks() {
-    let linksContainer = document.querySelector(".social-links");
-    let linkInput = document.createElement("input");
-    linkInput.type = "text";
-    linkInput.placeholder = "Enter link URL...";
-    
-    let linkTextInput = document.createElement("input");
-    linkTextInput.type = "text";
-    linkTextInput.placeholder = "Enter link text...";
+    let container = document.querySelector(".social-links");
+    container.innerHTML = ""; // Clear existing content
 
-    let saveButton = document.createElement("button");
-    saveButton.innerText = "Add Link";
-    
-    linksContainer.appendChild(linkInput);
-    linksContainer.appendChild(linkTextInput);
-    linksContainer.appendChild(saveButton);
-    
-    saveButton.addEventListener("click", function () {
-        if (linkInput.value && isValidUrl(linkInput.value) && linkTextInput.value) {
-            links.push({ url: linkInput.value, text: linkTextInput.value });
+    let titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.placeholder = "Link Title (e.g. Twitter)";
+
+    let urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.placeholder = "Enter URL (e.g. https://twitter.com/yourpage)";
+
+    let addBtn = document.createElement("button");
+    addBtn.innerText = "Add Link";
+
+    container.appendChild(titleInput);
+    container.appendChild(urlInput);
+    container.appendChild(addBtn);
+
+    addBtn.addEventListener("click", function () {
+        let title = titleInput.value.trim();
+        let url = urlInput.value.trim();
+
+        if (title && url) {
+            links.push({ title, url });
             localStorage.setItem("socialLinks", JSON.stringify(links));
-            
-            linkInput.remove();
-            linkTextInput.remove();
-            saveButton.remove();
             displayLinks();
-        } else {
-            alert("Please enter a valid URL and link text.");
         }
     });
 }
 
-function isValidUrl(url) {
-    try {
-        new URL(url);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-
 function displayLinks() {
-    const linksContainer = document.querySelector(".social-links");
-    linksContainer.innerHTML = "";
+    let container = document.querySelector(".social-links");
+    container.innerHTML = "";
 
-    links.forEach(function(link, index) {
-        let linkElement = document.createElement("a");
-        linkElement.href = link.url;
-        linkElement.innerText = link.text;
-        linkElement.target = "_blank";
+    links.forEach((linkObj, index) => {
+        let linkEl = document.createElement("a");
+        linkEl.href = linkObj.url;
+        linkEl.target = "_blank";
+        linkEl.innerText = linkObj.title;
 
-        let removeButton = document.createElement("button");
-        removeButton.innerText = "Remove";
-        removeButton.onclick = function() {
-            removeLink(index);
-        };
+        let removeBtn = document.createElement("button");
+        removeBtn.innerText = "Remove";
+        removeBtn.style.marginLeft = "10px";
+        removeBtn.addEventListener("click", function () {
+            links.splice(index, 1);
+            localStorage.setItem("socialLinks", JSON.stringify(links));
+            displayLinks();
+        });
 
-        linksContainer.appendChild(linkElement);
-        linksContainer.appendChild(removeButton);
-        linksContainer.appendChild(document.createElement("br"));
+        let wrapper = document.createElement("div");
+        wrapper.appendChild(linkEl);
+        wrapper.appendChild(removeBtn);
+        container.appendChild(wrapper);
     });
-}
-
-function removeLink(index) {
-    links.splice(index, 1);
-    localStorage.setItem("socialLinks", JSON.stringify(links));
-    displayLinks();
 }
