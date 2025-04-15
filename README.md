@@ -4,6 +4,6 @@ The purpose of this project is to create a simple CMS system. Using a visual edi
  
 Github:
 
-https://potential-adventure-kr1k181.pages.github.io
+https://crispy-adventure-6v91pl3.pages.github.io/
 
-https://potential-adventure-kr1k181.pages.github.io/admin/
+https://crispy-adventure-6v91pl3.pages.github.io/admin/
