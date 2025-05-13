@@ -1,13 +1,17 @@
 var currentValue = "O";
-function playerplace(id)
+function playerplace(e)
 {   
-    const boxid = id;
-    if (currentValue != "X"){
-        currentValue = "X";
-        document.getElementById(boxid).innerHTML = currentValue;
-    } 
-    else{
-        currentValue = "O";
-        document.getElementById(boxid).innerHTML = currentValue;
+
+    const cellDiv = e.target;
+
+    if (e.target.innerHTML == ""){
+        if (currentValue != "X"){
+            currentValue = "X";
+            e.target.innerHTML = currentValue;
+        } 
+        else{
+            currentValue = "O";
+            e.target.innerHTML = currentValue;
+        }
     }
 }
