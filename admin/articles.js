@@ -1,10 +1,9 @@
-function addArticle(event)
-{
-    
+function addArticle(event) {
+
 
     const newarticle = document.getElementById("newarticle")
-    
-    if (event.target.innerHTML != "Save"){
+
+    if (event.target.innerHTML != "Save") {
         newarticle.hidden = false
         event.target.innerHTML = "Save"
     } else {
@@ -17,8 +16,7 @@ function addArticle(event)
 
 }
 
-function addArticleElement(title, text)
-{
+function addArticleElement(title, text) {
     const article = document.createElement("article")
     article.setAttribute("class", "post")
     article.innerHTML = `<div class="post-content">
@@ -29,6 +27,22 @@ function addArticleElement(title, text)
                     <img src="images/house.png">
                 </div>`
 
-    const articles =  document.getElementById("articles")
+    const articles = document.getElementById("articles")
     articles.appendChild(article)
+
+    const button = document.createElement("button")
+    article.appendChild(button)
+    localStorage.setItem();
+
+    button.innerHTML = "Delete"
+    button.addEventListener("click", () => {
+        articles.removeChild(article)
+    })
+
+
+}
+
+function editArticle()
+{
+ 
 }
