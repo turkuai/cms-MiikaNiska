@@ -93,10 +93,10 @@ function playerplace(e) {
         }
 }
 
+let gameid = null
 function startGame() {
         const playerX = document.getElementById("p1").value
         const playerO = document.getElementById("p2").value
-        console.log(playerX, playerO)
         fetch("replay-save.php",
                 {
                         headers: {
@@ -106,6 +106,6 @@ function startGame() {
                         method: "POST",
                         body: JSON.stringify({ playerX, playerO })
                 })
-                .then(function (res) { console.log(res) })
+                .then( (res) => res.json()).then(json => {gameid = json.gameid; console.log(gameid)})
                 .catch(function (res) { console.log(res) })
 }
