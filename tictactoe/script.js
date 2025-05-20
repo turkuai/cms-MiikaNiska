@@ -1,19 +1,45 @@
-var currentValue = "O";
+let currentValue = "O";
+let gameId = 1
+let moveIndex = 0
+
+// TODO: For the interval:
+// https://www.w3schools.com/jsref/met_win_setinterval.asp
+// https://www.w3schools.com/jsref/met_html_click.asp
+// do not post to server current move info in case of reply
+
+
 function playerplace(e) {
 
         const cellDiv = e.target;
 
-        if (e.target.innerHTML == "") {
+        if (cellDiv.innerHTML == "") {
                 if (currentValue != "X") {
                         currentValue = "X";
-                        e.target.innerHTML = currentValue;
+                        cellDiv.innerHTML = currentValue;
                         checkwin()
                 }
                 else {
                         currentValue = "O";
-                        e.target.innerHTML = currentValue;
+                        cellDiv.innerHTML = currentValue;
                         checkwin()
                 }
+
+                const row = cellDiv.getAttribute("row")
+                const col = cellDiv.getAttribute("col")
+
+                fetch("replay-move-save.php",
+                        {
+                                headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                },
+                                method: "POST",
+                                body: JSON.stringify({ gameId, moveIndex, row, col })
+                        })
+                        .then((res) => res.json()).then(json => { console.log("move saved") })
+                        .catch(function (res) { console.log(res) })
+
+                moveIndex++
         }
 
         function checkwin() {
@@ -93,8 +119,9 @@ function playerplace(e) {
         }
 }
 
-let gameid = null
 function startGame() {
+        moveIndex = 0
+
         const playerX = document.getElementById("p1").value
         const playerO = document.getElementById("p2").value
         fetch("replay-save.php",
@@ -106,6 +133,6 @@ function startGame() {
                         method: "POST",
                         body: JSON.stringify({ playerX, playerO })
                 })
-                .then( (res) => res.json()).then(json => {gameid = json.gameid; console.log(gameid)})
+                .then((res) => res.json()).then(json => { gameId = json.gameid; console.log(gameId) })
                 .catch(function (res) { console.log(res) })
 }
