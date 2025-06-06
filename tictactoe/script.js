@@ -16,11 +16,13 @@ function playerplace(e) {
                 if (currentValue != "X") {
                         currentValue = "X";
                         cellDiv.innerHTML = currentValue;
+                        moveIndex++
                         checkwin()
                 }
                 else {
                         currentValue = "O";
                         cellDiv.innerHTML = currentValue;
+                        moveIndex++
                         checkwin()
                 }
 
@@ -39,7 +41,6 @@ function playerplace(e) {
                         .then((res) => res.json()).then(json => { console.log("move saved") })
                         .catch(function (res) { console.log(res) })
 
-                moveIndex++
         }
 
         function checkwin() {
@@ -135,4 +136,36 @@ function startGame() {
                 })
                 .then((res) => res.json()).then(json => { gameId = json.gameid; console.log(gameId) })
                 .catch(function (res) { console.log(res) })
+}
+
+function replay() {
+        fetch("replay-get.php",
+                {
+                        headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                        },
+                        method: "POST",
+                        body: JSON.stringify({ gameId: 6 })
+                })
+                .then((res) => res.json()).then(moves => { replayMoves(moves) })
+                .catch(function (res) { console.log(res) })
+
+
+}
+
+function replayMoves(moves){
+        let index = 0
+        const myInterval = setInterval(function () {
+                const move = moves[index]
+                const id = `box-${move.row}-${move.col}`
+                document.getElementById(id).click()
+                index ++
+                if (index == moves.length){
+                        clearInterval(myInterval)
+                }                
+
+
+
+        }, 1000)
 }
