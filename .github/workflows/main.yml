@@ -13,5 +13,5 @@ jobs:
       with:
         server: 194.197.245.5
         username: vp_5381
-        password: ${{ secrets.ftp_PASSWORD }}
+        password: ${{ secrets.PASSWORD }}
         server-dir: cms/
